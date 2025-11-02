@@ -1,49 +1,49 @@
 # Emo-TTS Benchmark
 
-一个用于对比 F5-TTS 和 Tortoise-TTS 两个模型在情绪语音合成任务上的性能评估项目。
+A performance evaluation project for comparing F5-TTS and Tortoise-TTS models on emotional speech synthesis tasks.
 
-## 项目结构
+## Project Structure
 
 ```
 emo-tts-benchmark/
 ├── models/
-│   ├── f5-tts/          # F5-TTS 模型（已 git clone）
-│   └── tortoise-tts/     # Tortoise-TTS 模型（已 git clone）
+│   ├── f5-tts/          # F5-TTS model (git cloned)
+│   └── tortoise-tts/    # Tortoise-TTS model (git cloned)
 ├── data/
-│   ├── texts/           # 文本文件目录
-│   │   ├── happy/        # 快乐情绪文本
+│   ├── texts/           # Text files directory
+│   │   ├── happy/        # Happy emotion texts
 │   │   │   ├── 01.txt
 │   │   │   ├── 02.txt
 │   │   │   └── ...
-│   │   ├── sad/          # 悲伤情绪文本
+│   │   ├── sad/          # Sad emotion texts
 │   │   │   ├── 01.txt
 │   │   │   ├── 02.txt
 │   │   │   └── ...
-│   │   ├── angry/        # 愤怒情绪文本
-│   │   ├── tired/        # 疲惫情绪文本
-│   │   ├── excited/      # 兴奋情绪文本
-│   │   └── neutral/      # 中性情绪文本
-│   └── references/      # 情绪参考音频目录（可选，如 happy_ref.wav, sad_ref.wav...）
+│   │   ├── angry/        # Angry emotion texts
+│   │   ├── tired/        # Tired emotion texts
+│   │   ├── excited/      # Excited emotion texts
+│   │   └── neutral/      # Neutral emotion texts
+│   └── references/      # Emotional reference audio directory (optional, e.g., happy_ref.wav, sad_ref.wav...)
 ├── outputs/
-│   ├── f5/              # F5-TTS 输出目录
+│   ├── f5/              # F5-TTS output directory
 │   │   ├── happy/
 │   │   ├── sad/
 │   │   └── ...
-│   └── tortoise/         # Tortoise-TTS 输出目录
+│   └── tortoise/         # Tortoise-TTS output directory
 │       ├── happy/
 │       ├── sad/
 │       └── ...
 ├── scripts/
-│   ├── run_f5_batch.py       # F5-TTS 批量生成脚本
-│   └── run_tortoise_batch.py  # Tortoise-TTS 批量生成脚本
+│   ├── run_f5_batch.py       # F5-TTS batch generation script
+│   └── run_tortoise_batch.py  # Tortoise-TTS batch generation script
 └── README.md
 ```
 
-## 使用说明
+## Usage
 
-### 1. 准备数据
+### 1. Prepare Data
 
-在 `data/texts/` 目录下为每种情绪创建对应的文件夹，并在每个文件夹中放置多个文本文件：
+Create corresponding folders for each emotion under the `data/texts/` directory, and place multiple text files in each folder:
 
 ```
 data/texts/
@@ -63,22 +63,22 @@ data/texts/
 └── neutral/
 ```
 
-每个 `.txt` 文件包含一行文本，该文本将被生成一条语音。
+Each `.txt` file should contain one line of text, which will be used to generate one audio file.
 
-**注意：**
-- 文件命名可以是任意格式（如 `01.txt`, `file1.txt` 等）
-- 输出文件名将基于输入文件名生成（如 `01.txt` -> `f5-happy-01.wav`）
+**Note:**
+- File names can be in any format (e.g., `01.txt`, `file1.txt`, etc.)
+- Output filenames will be generated based on input filenames (e.g., `01.txt` -> `f5-happy-01.wav`)
 
-可选：在 `data/references/` 目录下放置参考音频文件（命名格式：`<emotion>_ref.wav`），如：
+Optional: Place reference audio files in the `data/references/` directory (naming format: `<emotion>_ref.wav`), such as:
 - `happy_ref.wav`
 - `sad_ref.wav`
 - ...
 
-如果不存在参考音频，脚本将使用模型默认设置生成。
+If reference audio does not exist, the scripts will use model default settings.
 
-### 2. 运行批量生成
+### 2. Run Batch Generation
 
-两个脚本都使用 Python 格式，运行方式统一：
+Both scripts use Python format with unified execution:
 
 #### F5-TTS
 
@@ -94,81 +94,152 @@ conda activate tortoise
 python scripts/run_tortoise_batch.py
 ```
 
-### 3. 输出格式
+### 3. Output Format
 
-生成的音频文件将按以下格式命名：
+Generated audio files will be named according to the following format:
 
 - F5-TTS: `outputs/f5/<emotion>/f5-<emotion>-<filename>.wav`
 - Tortoise-TTS: `outputs/tortoise/<emotion>/tortoise-<emotion>-<filename>.wav`
 
-其中：
-- `<emotion>`: 情绪名称（happy, sad, angry, tired, excited, neutral）
-- `<filename>`: 输入文本文件的文件名（不含扩展名）
+Where:
+- `<emotion>`: Emotion name (happy, sad, angry, tired, excited, neutral)
+- `<filename>`: Input text file name (without extension)
 
-**示例：**
-- 输入：`data/texts/happy/01.txt`
-- F5-TTS 输出：`outputs/f5/happy/f5-happy-01.wav`
-- Tortoise-TTS 输出：`outputs/tortoise/happy/tortoise-happy-01.wav`
+**Example:**
+- Input: `data/texts/happy/01.txt`
+- F5-TTS Output: `outputs/f5/happy/f5-happy-01.wav`
+- Tortoise-TTS Output: `outputs/tortoise/happy/tortoise-happy-01.wav`
 
-### 4. 对比分析
+### 4. Comparison Analysis
 
-生成的音频文件按照统一的命名规则输出，方便进行对比：
+Generated audio files follow a unified naming convention for easy comparison:
 
-- 相同的输入文本文件在 F5-TTS 和 Tortoise-TTS 上生成的音频文件名对应（除了前缀）
-- 例如：
+- The same input text file will generate corresponding audio files on both F5-TTS and Tortoise-TTS (with different prefixes)
+- For example:
   - `outputs/f5/happy/f5-happy-01.wav`
   - `outputs/tortoise/happy/tortoise-happy-01.wav`
 
-这两个文件使用相同的输入文本文件（`data/texts/happy/01.txt`）生成，便于对比两个模型的效果。
+These two files are generated from the same input text file (`data/texts/happy/01.txt`), making it easy to compare the performance of both models.
 
-## 注意事项
+## Important Notes
 
-1. **环境要求**：
-   - F5-TTS 需要在对应的 conda 环境中运行
-   - Tortoise-TTS 需要在对应的 conda 环境中运行
+1. **Environment Requirements**:
+   - F5-TTS needs to run in the corresponding conda environment
+   - Tortoise-TTS needs to run in the corresponding conda environment
 
-2. **模型目录**：
-   - 不要修改 `models/f5-tts/` 和 `models/tortoise-tts/` 目录中的内容
-   - 脚本只会读取这些目录，不会修改它们
+2. **Model Directories**:
+   - Do not modify the contents of `models/f5-tts/` and `models/tortoise-tts/` directories
+   - Scripts only read from these directories and will not modify them
 
-3. **参考音频**：
-   - 参考音频为可选，如果不存在，脚本会使用模型默认设置
-   - 参考音频格式应为 WAV
+3. **Reference Audio**:
+   - Reference audio is optional; if not available, scripts will use model default settings
+   - Reference audio format should be WAV
 
-4. **输出目录**：
-   - 脚本会自动创建所需的输出目录
-   - 如果输出文件已存在，将被覆盖
+4. **Output Directory**:
+   - Scripts will automatically create required output directories
+   - If output files already exist, they will be overwritten
 
-5. **文本文件**：
-   - 每个文本文件应包含一行文本
-   - 空文件将被跳过
-   - 文件名将用于生成对应的输出文件名
+5. **Text Files**:
+   - Each text file should contain one line of text
+   - Empty files will be skipped
+   - Filenames will be used to generate corresponding output filenames
 
-## 脚本说明
+## Script Description
 
 ### `run_f5_batch.py`
 
-F5-TTS 批量生成脚本（Python）。该脚本：
-- 遍历 `data/texts/<emotion>/` 目录下的所有文本文件
-- 检查是否有对应的参考音频（`data/references/<emotion>_ref.wav`）
-- 如果没有参考音频，使用 F5-TTS 默认参考音频
-- 对每个文本文件生成语音，保存到 `outputs/f5/<emotion>/f5-<emotion>-<filename>.wav`
+F5-TTS batch generation script (Python). This script:
+- Iterates through all text files in `data/texts/<emotion>/` directories
+- Checks for corresponding reference audio (`data/references/<emotion>_ref.wav`)
+- Uses F5-TTS default reference audio if not available
+- Generates speech for each text file, saved to `outputs/f5/<emotion>/f5-<emotion>-<filename>.wav`
 
 ### `run_tortoise_batch.py`
 
-Tortoise-TTS 批量生成脚本（Python）。该脚本：
-- 遍历 `data/texts/<emotion>/` 目录下的所有文本文件
-- 检查是否有对应的参考音频（`data/references/<emotion>_ref.wav`）
-- 如果没有参考音频，使用随机 conditioning latents
-- 对每个文本文件生成语音，保存到 `outputs/tortoise/<emotion>/tortoise-<emotion>-<filename>.wav`
-- 使用 'fast' preset 以加快生成速度
+Tortoise-TTS batch generation script (Python). This script:
+- Iterates through all text files in `data/texts/<emotion>/` directories
+- Checks for corresponding reference audio (`data/references/<emotion>_ref.wav`)
+- Uses random conditioning latents if reference audio is not available
+- Generates speech for each text file, saved to `outputs/tortoise/<emotion>/tortoise-<emotion>-<filename>.wav`
+- Uses 'fast' preset to speed up generation
 
-## 支持的情绪
+## Supported Emotions
 
-- `happy` - 快乐
-- `sad` - 悲伤
-- `angry` - 愤怒
-- `tired` - 疲惫
-- `excited` - 兴奋
-- `neutral` - 中性
+- `happy` - Happy
+- `sad` - Sad
+- `angry` - Angry
+- `tired` - Tired
+- `excited` - Excited
+- `neutral` - Neutral
 
+## Environment Setup
+
+### F5-TTS Environment
+
+1. Create conda environment:
+```bash
+conda create -n f5 python=3.11 -y
+conda activate f5
+```
+
+2. Install PyTorch (for Apple Silicon):
+```bash
+pip install torch torchaudio
+```
+
+3. Install F5-TTS:
+```bash
+cd models/F5-TTS
+pip install -e .
+```
+
+4. Important: Downgrade torchaudio to avoid torchcodec issues:
+```bash
+pip install "torchaudio<2.5"
+```
+
+### Tortoise-TTS Environment
+
+1. Create conda environment:
+```bash
+conda create -n tortoise python=3.9 -y
+conda activate tortoise
+```
+
+2. Install PyTorch (for Apple Silicon):
+```bash
+pip install torch torchaudio
+```
+
+3. Install Tortoise-TTS:
+```bash
+cd models/tortoise-tts
+pip install -r requirements.txt
+# or
+pip install -e .
+```
+
+## Troubleshooting
+
+### F5-TTS Issues
+
+**Error: "TorchCodec is required for load_with_torchcodec"**
+- Solution: Downgrade torchaudio to version < 2.5
+- Command: `pip install "torchaudio<2.5"`
+
+**Error: "'function' object has no attribute 'tqdm'"**
+- Solution: The script has been updated with a proper progress wrapper. Make sure you're using the latest version.
+
+### Tortoise-TTS Issues
+
+**Error: "No module named 'tortoise'"**
+- Solution: Ensure you're in the correct conda environment and Tortoise-TTS is installed
+
+**Model download takes too long**
+- Solution: First run will download models automatically. Ensure internet connection is available.
+
+## License
+
+This project is for research and educational purposes. Please refer to the respective model licenses:
+- F5-TTS: See `models/F5-TTS/LICENSE`
+- Tortoise-TTS: See `models/tortoise-tts/LICENSE`
